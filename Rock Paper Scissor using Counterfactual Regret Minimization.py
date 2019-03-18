@@ -21,35 +21,35 @@ def getAveragestrategy(strategySum):
     avgStrategy = np.zeros(3)
     normalizingSum = np.sum(strategySum)
     if normalizingSum > 0:
-        avgStrategytrategy = strategySum/normalizingSum
+        avgStrategy = strategySum/normalizingSum
     else:
-        avgStrategytrategy = np.ones(3)/numActions
+        avgStrategy = np.ones(3)/numActions
     return avgStrategy
-    
+
 def getAction(strategy):
 #   return np.searchsorted(np.cumsum(strategy), random.random())
     return np.sum(np.where(np.cumsum(strategy) > random.random(), 0, 1))
 
 def train(iterations):
-    
+
     regretSum = np.zeros(numActions)
     strategySum = np.zeros(3)
     actionUtility = np.zeros(numActions)
-    
+
     for i in range(iterations):
-        
+
         strategy = getstrategy(regretSum, strategySum)
         myAction = getAction(strategy)
         oppAction = getAction(oppStrategy)
-        
+
         actionUtility[oppAction] = 0
         actionUtility[(oppAction + 1) % numActions] = 1
         actionUtility[(oppAction - 1) % numActions] = -1
-        
+
         regretSum += actionUtility - actionUtility[myAction]
-    
+
     return strategySum
 
 
-getAveragestrategy(train(10000))
+print(getAveragestrategy(train(10000)))
 
