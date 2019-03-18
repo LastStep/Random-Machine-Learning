@@ -5,42 +5,42 @@ np.set_printoptions(suppress=True)
 
 Rock, Paper, Scissior = 0, 1, 2
 numActions = 3
-oppStratergy = np.array([0.4,0.3,0.3])
+oppStrategy = np.array([0.4,0.3,0.3])
 
-def getStratergy(regretSum, stratergySum):
-    stratergy = np.maximum(regretSum, 0)
-    normalizingSum = np.sum(stratergy)
+def getstrategy(regretSum, strategySum):
+    strategy = np.maximum(regretSum, 0)
+    normalizingSum = np.sum(strategy)
     if normalizingSum > 0:
-        stratergy /= normalizingSum
+        strategy /= normalizingSum
     else:
-        stratergy = np.ones(3)/numActions
-    stratergySum += stratergy
-    return stratergy
+        strategy = np.ones(3)/numActions
+    strategySum += strategy
+    return strategy
 
-def getAverageStratergy(regretSum, stratergySum):
-    avgStratergy = np.zeros(3)
-    normalizingSum = np.sum(stratergySum)
+def getAveragestrategy(strategySum):
+    avgStrategy = np.zeros(3)
+    normalizingSum = np.sum(strategySum)
     if normalizingSum > 0:
-        avgStratergy = stratergySum/normalizingSum
+        avgStrategytrategy = strategySum/normalizingSum
     else:
-        avgStratergy = np.ones(3)/numActions
-    return avgStratergy
+        avgStrategytrategy = np.ones(3)/numActions
+    return avgStrategy
     
-def getAction(stratergy):
-#    return np.searchsorted(np.cumsum(stratergy), random.random())
-    return np.sum(np.where(np.cumsum(stratergy) > random.random(), 0, 1))
+def getAction(strategy):
+#   return np.searchsorted(np.cumsum(strategy), random.random())
+    return np.sum(np.where(np.cumsum(strategy) > random.random(), 0, 1))
 
 def train(iterations):
     
     regretSum = np.zeros(numActions)
-    stratergySum = np.zeros(3)
+    strategySum = np.zeros(3)
     actionUtility = np.zeros(numActions)
     
     for i in range(iterations):
         
-        stratergy = getStratergy(regretSum, stratergySum)
-        myAction = getAction(stratergy)
-        oppAction = getAction(oppStratergy)
+        strategy = getstrategy(regretSum, strategySum)
+        myAction = getAction(strategy)
+        oppAction = getAction(oppStrategy)
         
         actionUtility[oppAction] = 0
         actionUtility[(oppAction + 1) % numActions] = 1
@@ -48,8 +48,8 @@ def train(iterations):
         
         regretSum += actionUtility - actionUtility[myAction]
     
-    return regretSum, stratergySum
+    return strategySum
 
 
-getAverageStratergy(*train(10000))
+getAveragestrategy(train(10000))
 
